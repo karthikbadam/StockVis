@@ -9,10 +9,11 @@ function Stock(options) {
     _self.min = 0;
     _self.max = 0;
     _self.normalization = 0;
-    _self.dataFiltered = [];
+   
 } 
 
 Stock.prototype.normalize = function(close_values) {
+    var _self = this; 
     var max = Math.max.apply(Math, close_values) + 0.0001;
     var min = Math.min.apply(Math, close_values) - 0.0001;
 
@@ -49,11 +50,11 @@ Stock.prototype.normalizeValue = function(value) {
 
 Stock.prototype.getFilteredData = function(brush) {
     var _self = this;
-    _self.dataFiltered = _self.data.filter(function(d, i) {
+    var dataFiltered = _self.data.filter(function(d, i) {
         if ( (d[_self.stockColumns[0]] >= brush[0]) && (d[_self.stockColumns[0]] <= brush[1]) ) {
             return d[_self.stockColumns[1]];
         }
     });
     
-   return _self.dataFiltered; 
+   return dataFiltered; 
 }; 

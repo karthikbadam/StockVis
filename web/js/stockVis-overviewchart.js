@@ -74,7 +74,7 @@ function OverviewChart(options) {
 
 
     var brush = d3.svg.brush().x(_self.x).on("brush", onBrush);
-    var context = svg.append("g").attr("class", "context")
+    var context = _self.svg.append("g").attr("class", "context")
         .attr("transform", "translate(" + 0 + "," + (0) + ")");
 
 
@@ -139,6 +139,7 @@ function OverviewChart(options) {
 }
 
 OverviewChart.prototype.addLine = function(options) {
+    var _self = this; 
     _self.stockObject = options.stockObject;
     _self.data = _self.stockObject.data;
     _self.id = options.id;
