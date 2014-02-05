@@ -9,6 +9,7 @@ function Stock(options) {
     _self.min = 0;
     _self.max = 0;
     _self.normalization = 0;
+    _self.stockColumns = options.stockColumns;
    
 } 
 

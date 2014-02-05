@@ -272,7 +272,7 @@ function LineChart(options) {
             _self.predictedValueX = _self.width - rect_offsetX + (_self.numberOfPredictionsMade + 1)*rectangle_width;    
             _self.predictedValueY = m[1] - _self.margin.top;    
             
-            _self.predictedY = _self.stockMaxValue - (_self.stockMaxValue - _self.stockMinValue) * (((m[1] - margin.top)) / (height));
+            _self.predictedY = _self.stockMaxValue - (_self.stockMaxValue - _self.stockMinValue) * (((m[1] - _self.margin.top)) / (_self.height));
             _self.lineLength = 100 * ((_self.predictedY - _self.closingValue) / _self.closingValue);
         }
         
@@ -476,7 +476,7 @@ LineChart.prototype.showOnly = function(b, empty) {
     
     //parameters to find the ending value of each chart
     _self.lastValueY = _self.y(_self.dataFiltered[0][_self.stockColumns[1]]);
-    _self.lastValueX = x(_self.dataFiltered[0][_self.stockColumns[0]]);
+    _self.lastValueX = _self.x(_self.dataFiltered[0][_self.stockColumns[0]]);
 
     _self.closingValue = _self.dataFiltered[0][_self.stockColumns[1]];
     _self.stockMaxValue = _self.y.domain()[1];
@@ -501,7 +501,7 @@ LineChart.prototype.showOnly = function(b, empty) {
         .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function(d) {
-            return x(d[_self.stockColumns[0]]);
+            return _self.x(d[_self.stockColumns[0]]);
         })
         .attr("width", 4)
         .attr("y", function(d) {

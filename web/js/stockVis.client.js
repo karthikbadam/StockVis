@@ -159,7 +159,8 @@ $(document).ready(function() {
                             data: data,
                             companyName: stock_name,
                             symbol: stock_id,
-                            startDate: startDate
+                            startDate: startDate,
+                            stockColumns: stockColumns
                         });
                         
                         stocks.push(stockObject);
