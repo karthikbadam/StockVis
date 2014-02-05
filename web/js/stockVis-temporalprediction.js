@@ -1,6 +1,7 @@
 //Class Temporal Prediction
 
 function TemporalPrediction(options) {
+    var _self = this;
 //    var layers = this.layers = [];
 //    layers[0] = ENCOG.BasicLayer.create(ENCOG.ActivationTANH.create(), 15, 1);
 //    layers[1] = ENCOG.BasicLayer.create(ENCOG.ActivationTANH.create(), 41, 1);
@@ -13,21 +14,21 @@ function TemporalPrediction(options) {
 //    var result = ENCOG.EGFILE.save(network);
 //   
  
-    var stockName = this.stockName = options.stock_name;
-    var encogFileContent = this.encogFileContent = options.encog_file; 
+    _self.stockName = options.stock_name;
+    _self.encogFileContent = options.encog_file; 
    
-    var network = this.network = ENCOG.EGFILE.load(encogFileContent);
+    _self.network = ENCOG.EGFILE.load(_self.encogFileContent);
     
-    var result = ENCOG.EGFILE.save(network);
+    var result = ENCOG.EGFILE.save(_self.network);
     
     console.log("result --"+result);
 };
 
 TemporalPrediction.prototype.predict = function(input) {
-    var network = this.network;
+    var _self = this;
     
     var output = new Array(1);
-    network.compute(input, output);
+    _self.network.compute(input, output);
    
     return output;
 };
