@@ -1,103 +1,92 @@
 //Correlation Chart class
 
-function CorrelationChart(options) {  
-    var selectedSymbolsData = this.selectedSymbolsData = options.selectedSymbolsData;
-    var selectedSymbols = this.selectedSymbols = options.selectedSymbols; 
-    var color = this.color = options.color; 
+function CorrelationChart(options) { 
+    var _self = this; 
     
-    var nodes = this.nodes = [];    
-    var links = this.links = [];
+    _self.selectedSymbolsData = options.selectedSymbolsData;
+    _self.selectedSymbols = options.selectedSymbols; 
+    _self.color = options.color; 
     
-    var margin = this.margin = {top: 60, right: 20, bottom: 60, left: 20},
-        width = ($("#correlation-viewer").parent().width()/3 - margin.left - margin.right),
-        height = ($("#correlation-viewer").parent().height() - margin.top - margin.bottom);
+    _self.nodes = [];    
+    _self.links = [];
+    
+    _self.margin = {top: 60, right: 20, bottom: 60, left: 20};
+    _self.width = ($("#correlation-viewer").parent().width()/3 - _self.margin.left - _self.margin.right);
+    _self.height = ($("#correlation-viewer").parent().height() - _self.margin.top - _self.margin.bottom);
         
-    var force = this.force = d3.layout.force()
+    _self.force = d3.layout.force()
     .charge(-120)
     .linkDistance(function(d) { return 10*Math.sqrt(d.value);} )
-    .size([width, height]);
+    .size([_self.width, _self.height]);
 
-    this.width = width;
-    this.height = height;
-   
-    this.div = d3.select("#correlation-viewer");    
+    _self.div = d3.select("#correlation-viewer");    
 }
 
 CorrelationChart.prototype.refresh = function () {
-    var margin = this.margin;
+    var _self = this; 
     
-    var selectedSymbolsData = this.selectedSymbolsData;
-    var selectedSymbols = this.selectedSymbols;
-    
-    this.div = d3.select("#correlation-viewer");
+    _self.div = d3.select("#correlation-viewer");
        
-    var svg = this.svg = this.div.append("svg")
+    _self.svg = _self.div.append("svg")
         .attr("class", "correlation-svg")
-        .attr("width", this.width + margin.left + margin.right )
-        .attr("height", this.height + margin.top + margin.bottom )
+        .attr("width", _self.width + _self.margin.left + _self.margin.right )
+        .attr("height", _self.height + _self.margin.top + _self.margin.bottom )
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + _self.margin.left + "," + _self.margin.top + ")");
 
-    var nodes = this.nodes = [];    
-    var links = this.links = [];
+    _self.nodes = [];    
+    _self.links = [];
 
-    for (var i = 0; i < selectedSymbols.length; i++) {
-        var node = {};
-        node.name = selectedSymbols[i];
-        node.id = i;
-        nodes.push(node);
+    for (var i = 0; i < _self.selectedSymbols.length; i++) {
+        var node1 = {};
+        node1.name = _self.selectedSymbols[i];
+        node1.id = i;
+        _self.nodes.push(node1);
     }
     
-    for (var i = 0; i < selectedSymbols.length; i++) {
-        for (var j = i+1; j < selectedSymbols.length; j++ ) {
+    for (var i = 0; i < _self.selectedSymbols.length; i++) {
+        for (var j = i+1; j < _self.selectedSymbols.length; j++ ) {
             var link1 = {};
             link1.source = i;
             link1.target = j;
-            var data1 = this.selectedSymbolsData[i];
-            var data2 = this.selectedSymbolsData[j];
+            var data1 = _self.selectedSymbolsData[i];
+            var data2 = _self.selectedSymbolsData[j];
             var value1 = 100*(data1[0]['Adj Close'] - data1[1]['Adj Close'])/data1[1]['Adj Close'];
             var value2 = 100*(data2[0]['Adj Close'] - data2[1]['Adj Close'])/data2[1]['Adj Close'];
-            link1.value = (value1 - value2)*(value1 - value2);
-            console.log(link1);
-            this.links.push(link1);
+            link1.value = Math.pow(value1 - value2, 2);
+            _self.links.push(link1);
         }
     }
     
-    console.log(links);
-    var color = this.color;
-    
-    var force = this.force;
-    
-    force
-      .nodes(nodes)
-      .links(links)
+    _self.force.nodes(_self.nodes)
+      .links(_self.links)
       .start();
 
-    var link = svg.selectAll(".link")
-        .data(links)
+    _self.link = _self.svg.selectAll(".link")
+        .data(_self.links)
         .enter().append("line")
         .attr("class", "link")
         .attr("stroke", "#aaa")
         .attr("stroke-width", "0.5px");
 
-    var node = svg.selectAll(".node")
-        .data(nodes)
-      .enter().append("circle")
+    _self.node = _self.svg.selectAll(".node")
+        .data(_self.nodes)
+        .enter().append("circle")
         .attr("class", "node")
         .attr("r", 7)
         .style("fill", function(d) { return color(d.id); })
-        .call(force.drag);
+        .call(_self.force.drag);
 
-    node.append("title")
+    _self.node.append("title")
         .text(function(d) { return d.name; });
 
-    force.on("tick", function() {
-      link.attr("x1", function(d) { return d.source.x; })
+    _self.force.on("tick", function() {
+      _self.link.attr("x1", function(d) { return d.source.x; })
           .attr("y1", function(d) { return d.source.y; })
           .attr("x2", function(d) { return d.target.x; })
           .attr("y2", function(d) { return d.target.y; });
 
-      node.attr("cx", function(d) { return d.x; })
+      _self.node.attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; });
     });
     
