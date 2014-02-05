@@ -14,14 +14,14 @@ public class Config {
     //public static final String PROJECT_DIR = System.getProperty("user.dir");
     //change this and run
     //public static final String PROJECT_DIR = "/Users/karthik/Dropbox/StockVis/code/StockVisServlet";
-    public static final String PROJECT_DIR = "/WEB-INF";
+    public static final String PROJECT_DIR = "/data";
     
     
     public static final String BEGIN_TRAINING_DATE = "2010-05-06";
     public static final String END_TRAINING_DATE = "2013-05-02";
 
     public static final String BEGIN_TESTING_DATE = "2013-05-03";
-    public static final String END_TESTING_DATE = "2013-07-02";
+    public static final String END_TESTING_DATE = "2014-01-31";
 
     //spatial configuration files
     
@@ -48,7 +48,7 @@ public class Config {
     public static final Boolean DO_TRAIN = true;
 
     //change the training Dir
-    public static final String TRAINING_DIRECTORY= "/Users/karthik/Dropbox/StockVis/code/data/";
+    public static final String TRAINING_DIRECTORY= "/data/";
 
     //change the training file if needed
     public static final String STOCK_LIST_FILE = "internet information providers";
@@ -58,6 +58,6 @@ public class Config {
 
     //Download Cache Directory
     //public static final String CACHE_DIRECTORY= "/Users/karthik/Downloads/StockVis/cache/";
-    public static final String CACHE_DIRECTORY= PROJECT_DIR+"/cache/";
+    public static final String CACHE_DIRECTORY= PROJECT_DIR+"/";
 
 }
