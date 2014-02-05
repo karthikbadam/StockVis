@@ -21,7 +21,7 @@ public class Config {
     public static final String END_TRAINING_DATE = "2013-05-02";
 
     public static final String BEGIN_TESTING_DATE = "2013-05-03";
-    public static final String END_TESTING_DATE = "2014-01-31";
+    public static final String END_TESTING_DATE = "2014-01-14";
 
     //spatial configuration files
     

@@ -89,7 +89,7 @@ function LineChart(options) {
     }));
     
     _self.y.domain(d3.extent(_self.dataFiltered, function(stock) {
-        return stock[_self.stockColumns[1]];
+        return stock[_self.stockColumns[6]];
     }));
 
     
@@ -112,7 +112,7 @@ function LineChart(options) {
             return _self.x(d[_self.stockColumns[0]]);
         })
         .y(function(d) {
-            return _self.y(d[_self.stockColumns[1]]);
+            return _self.y(d[_self.stockColumns[6]]);
         });
 
     
@@ -180,11 +180,11 @@ function LineChart(options) {
 
     
     //parameters to show the prediction line at end of each chart
-    _self.lastValueY = _self.y(_self.data[0][_self.stockColumns[1]]);
+    _self.lastValueY = _self.y(_self.data[0][_self.stockColumns[6]]);
     _self.lastValueX = _self.x(_self.data[0][_self.stockColumns[0]]);
     _self.stockMaxValue = _self.y.domain()[1];
     _self.stockMinValue = _self.y.domain()[0];
-    _self.closingValue = _self.data[0][_self.stockColumns[1]];
+    _self.closingValue = _self.data[0][_self.stockColumns[6]];
 
     _self.predictionValueX = _self.lastValueX;
     _self.predictionValueY = _self.lastValueY;
@@ -192,7 +192,7 @@ function LineChart(options) {
     //creates y-axis for the volume bar chart 
     _self.volumeY = d3.scale.linear().range([_self.height / 4, 0]);
     _self.volumeY.domain(d3.extent(_self.data, function(stock) {
-        return stock["Volume"];
+        return stock[stockColumns[5]];
     }));
 
 
@@ -206,10 +206,10 @@ function LineChart(options) {
         })
         .attr("width", 2)
         .attr("y", function(d) {
-            return _self.volumeY(d["Volume"]);
+            return _self.volumeY(d[stockColumns[5]]);
         })
         .attr("height", function(d) {
-            return _self.height / 4 - _self.volumeY(d["Volume"]);
+            return _self.height / 4 - _self.volumeY(d[stockColumns[5]]);
         })
         .attr("fill", _self.color(_self.id))
         .attr("fill-opacity", 0.3);
@@ -354,7 +354,7 @@ LineChart.prototype.moveToNextInstance = function() {
     var _self = this;
     _self.tomorrowValue = _self.predictedY;
     var stockData = {};
-    stockData[_self.stockColumns[1]] = _self.tomorrowValue;
+    stockData[_self.stockColumns[6]] = _self.tomorrowValue;
     stockData[_self.stockColumns[0]] = _self.tomorrow;
     
     var b = _self.tomorrow;
@@ -375,7 +375,7 @@ LineChart.prototype.moveToNextInstance = function() {
     for (var i = 0; i < _self.data.length; i++) {
         var d = _self.data[i];
         if (d[_self.stockColumns[0]].getDate() === tomorrow.getDate() && d[_self.stockColumns[0]].getMonth() === tomorrow.getMonth() && d[_self.stockColumns[0]].getFullYear() === tomorrow.getFullYear()) {
-            _self.tomorrowValue = d[_self.stockColumns[1]];
+            _self.tomorrowValue = d[_self.stockColumns[6]];
             console.log("OWO");
             break;
         }
@@ -391,7 +391,7 @@ LineChart.prototype.moveToNextInstance = function() {
     
     var input = new Array(15);
     for (var i = 0; i < 15; i++) {
-        input[i] = _self.stockObject.normalizeValue(prData[i][_self.stockColumns[1]]);
+        input[i] = _self.stockObject.normalizeValue(prData[i][_self.stockColumns[6]]);
     }
     
     _self.numberOfPredictionsMade++;
@@ -467,7 +467,7 @@ LineChart.prototype.showOnly = function(b, empty) {
     _self.chartContainer.select(".x.axis").call(_self.xAxis);
 
     _self.y.domain(d3.extent(_self.dataFiltered, function(stock) {
-        return stock[_self.stockColumns[1]];
+        return stock[_self.stockColumns[6]];
     }));
     
     _self.y.domain([_self.y.domain()[0] - _self.y.domain()[0] / 50, _self.y.domain()[1] + _self.y.domain()[1] / 50]);
@@ -475,10 +475,10 @@ LineChart.prototype.showOnly = function(b, empty) {
 
     
     //parameters to find the ending value of each chart
-    _self.lastValueY = _self.y(_self.dataFiltered[0][_self.stockColumns[1]]);
+    _self.lastValueY = _self.y(_self.dataFiltered[0][_self.stockColumns[6]]);
     _self.lastValueX = _self.x(_self.dataFiltered[0][_self.stockColumns[0]]);
 
-    _self.closingValue = _self.dataFiltered[0][_self.stockColumns[1]];
+    _self.closingValue = _self.dataFiltered[0][_self.stockColumns[6]];
     _self.stockMaxValue = _self.y.domain()[1];
     _self.stockMinValue = _self.y.domain()[0];
 
@@ -490,7 +490,7 @@ LineChart.prototype.showOnly = function(b, empty) {
 
 
     var volumeY = _self.volumeY.domain(d3.extent(_self.dataFiltered, function(stock) {
-        return stock["Volume"];
+        return stock[stockColumns[5]];
     }));
 
     
@@ -505,10 +505,10 @@ LineChart.prototype.showOnly = function(b, empty) {
         })
         .attr("width", 4)
         .attr("y", function(d) {
-            return volumeY(d["Volume"]);
+            return volumeY(d[stockColumns[5]]);
         })
         .attr("height", function(d) {
-            return _self.height / 4 - volumeY(d["Volume"]);
+            return _self.height / 4 - volumeY(d[stockColumns[5]]);
         })
         .attr("fill", color(_self.id))
         .attr("fill-opacity", 0.6);
@@ -540,7 +540,7 @@ LineChart.prototype.showOnly = function(b, empty) {
 
     var input = new Array(15);
     for (var i = 0; i < 15; i++) {
-        input[i] = _self.stockObject.normalizeValue(_self.dataFiltered[i][_self.stockColumns[1]]);
+        input[i] = _self.stockObject.normalizeValue(_self.dataFiltered[i][_self.stockColumns[6]]);
     }
     //find the date of next day
     _self.tomorrow.setMonth(b[1].getMonth());
@@ -557,8 +557,8 @@ LineChart.prototype.showOnly = function(b, empty) {
     _self.tomorrowValue = 0;
     for (var i = 0; i < _self.data.length; i++) {
         var d = _self.data[i];
-        if (d[_self.stockColumns[0]].getDate() === _self.getDate() && d[_self.stockColumns[0]].getMonth() === _self.tomorrow.getMonth() && d[_self.stockColumns[0]].getFullYear() === _self.tomorrow.getFullYear()) {
-            _self.tomorrowValue = d[_self.stockColumns[1]];
+        if (d[_self.stockColumns[0]].getDate() === _self.tomorrow.getDate() && d[_self.stockColumns[0]].getMonth() === _self.tomorrow.getMonth() && d[_self.stockColumns[0]].getFullYear() === _self.tomorrow.getFullYear()) {
+            _self.tomorrowValue = d[_self.stockColumns[6]];
             break;
         }
     }

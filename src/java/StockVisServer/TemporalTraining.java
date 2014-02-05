@@ -135,11 +135,8 @@ public class TemporalTraining {
             
             File network_structure = new File(context.getRealPath(Config.SAVE_DIRECTORY), stockId+".eg");   
             EncogDirectoryPersistence.saveObject(network_structure, network);
-           
-            
             
             return ""+network.calculateError(temporalTesting.get(i));
-            
         }     
         return null;
     }

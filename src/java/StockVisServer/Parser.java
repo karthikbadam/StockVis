@@ -35,13 +35,19 @@ public class Parser {
 
     ServletContext context;
     public Parser(ServletContext context) {
-       columns = Arrays.asList(new String[]{"Date", "Open", "High", "Low", "Close", "Adj. Close"});
+       columns = Arrays.asList(new String[]{"Date", "Open", "High", "Low", "Close", "Adj Close"});
        this.context = context;
     }
 
     public void parseFiles() {
         try {
-            CSVParser parser = new CSVParser(new FileReader(Config.TRAINING_DIRECTORY + Config.STOCK_LIST_FILE + ".csv"), CSVFormat.DEFAULT);
+            //read from context
+            String filename = Config.TRAINING_DIRECTORY + Config.STOCK_LIST_FILE + ".csv";          
+                
+            //awfully important to find relative path!
+            String pathname =context.getRealPath(filename); 
+                
+            CSVParser parser = new CSVParser(new FileReader(pathname), CSVFormat.DEFAULT);
             List<CSVRecord> values = parser.getRecords();
             for (CSVRecord currentValue : values) {
                 String company = currentValue.get(0);
@@ -103,11 +109,14 @@ public class Parser {
                 String pathname =context.getRealPath(filename); 
                 
                 File downloadFile = new File(pathname);
-                if (!downloadFile.exists()) {
+                if(downloadFile.exists()) {
+                    downloadFile.delete();
+                }
+                //if (!downloadFile.exists()) {
                     System.out.println("Downloading Stock ticker --"+stockId);
                     YahooDownload download = new YahooDownload();
                     download.loadAllData(stockId, downloadFile, org.encog.util.csv.CSVFormat.DECIMAL_POINT, df.parse(Config.BEGIN_TRAINING_DATE), df.parse(Config.END_TESTING_DATE));
-                }
+                //}
                 parser = new CSVParser(new FileReader(pathname), CSVFormat.DEFAULT);
                 List<CSVRecord> values = parser.getRecords();
 

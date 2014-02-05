@@ -19,19 +19,19 @@ var spatialPrediction;
 
 var color = d3.scale.category10();
 
-var parseDate = d3.time.format("%Y-%m-%d").parse;
+var parseDate = d3.time.format("%Y%m%d").parse;
 
 var charts = [];
 
 var overviewChart;
 
-var stockColumns = ['Date', 'Open', 'Close', 'High', 'Low', 'Volume', 'Adj Close'];
+var stockColumns = ['date', 'open price', 'close price', 'high price', 'low price', 'volume', 'adjusted price'];
 
 var temporalPredictors = [];
 
 var stocks = [];
 
-var startDate = parseDate("2010-05-06");
+var startDate = parseDate("20100506");
 
 var correlationViewer;
 
@@ -54,7 +54,6 @@ $(document).ready(function() {
     $("#request_temporal").on('click', function (e) {
         //Download file from servlet
         $("#start_prediction_label").html("Prediction Started");
-        
         selectedSymbols.forEach(function(stockSymbol) {
             $.get("/StockVisServlet/TemporalPrediction", {"symbols[]": stockSymbol}, function(data, error){
                 var temporalprediction = new TemporalPrediction({
@@ -69,7 +68,7 @@ $(document).ready(function() {
         correlationViewer = new CorrelationChart({
             selectedSymbolsData: selectedSymbolsData,
             selectedSymbols: selectedSymbols,
-            color: color
+            color: color, 
         });
         
         correlationViewer.refresh();
@@ -174,7 +173,7 @@ $(document).ready(function() {
                             color: color,
                             trainingStocks: trainingStockList,
                             charts: charts,
-                            columns: [stockColumns[0], stockColumns[6]],
+                            columns: stockColumns,
                             spatialPrediction: spatialPrediction,
                             temporalPredictors: temporalPredictors
                         }));

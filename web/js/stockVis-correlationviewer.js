@@ -51,8 +51,8 @@ CorrelationChart.prototype.refresh = function () {
             link1.target = j;
             var data1 = _self.selectedSymbolsData[i];
             var data2 = _self.selectedSymbolsData[j];
-            var value1 = 100*(data1[0]['Adj Close'] - data1[1]['Adj Close'])/data1[1]['Adj Close'];
-            var value2 = 100*(data2[0]['Adj Close'] - data2[1]['Adj Close'])/data2[1]['Adj Close'];
+            var value1 = 100*(data1[0][stockColumns[6]] - data1[1][stockColumns[6]])/data1[1][stockColumns[6]];
+            var value2 = 100*(data2[0][stockColumns[6]] - data2[1][stockColumns[6]])/data2[1][stockColumns[6]];
             link1.value = Math.pow(value1 - value2, 2);
             _self.links.push(link1);
         }

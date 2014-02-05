@@ -25,11 +25,11 @@ Stock.prototype.normalize = function(close_values) {
     _self.min = 100000;
     _self.max = 0;
     for (var i = 0; i < _self.data.length; i++) {
-        if( _self.min > _self.data[i]['Adj Close'] && _self.data[i].Date >  _self.startDate ) {
-            _self.min = _self.data[i]['Adj Close'];
+        if( _self.min > _self.data[i][_self.stockColumns[6]] && _self.data[i][_self.stockColumns[0]] >  _self.startDate ) {
+            _self.min = _self.data[i][_self.stockColumns[6]];
         }
-        if( _self.max < _self.data[i]['Adj Close'] && _self.data[i].Date >  _self.startDate ) {
-            _self.max = _self.data[i]['Adj Close'];
+        if( _self.max < _self.data[i][_self.stockColumns[6]] && _self.data[i][_self.stockColumns[0]] >  _self.startDate ) {
+            _self.max = _self.data[i][_self.stockColumns[6]];
         }   
     }
     
