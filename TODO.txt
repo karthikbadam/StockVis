@@ -1,0 +1,15 @@
+Created by Karthik - 2/11/2013
+
+[] Find a new name
+[X] Clean up code 
+[] Machine learning on ConvNetJS - Temporal prediction networks on client 
+[] Contact Prof. Gulen
+[] Aposterior probability based model on the server
+
+Client:
+[] Correlation viewer
+[] Save visual exploration states
+
+Algorithm:
+[] Use Greedy based approach to spread the prediction to mutiple levels - week vs. month
+[] Change dataset to movies?
