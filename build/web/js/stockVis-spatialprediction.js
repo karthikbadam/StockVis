@@ -1,36 +1,35 @@
 //Class Spatial Prediction
 
 function SpatialPrediction(options) {
-    var weights = this.weights = options.weights;
-    var trainingStocks = this.trainingStocks = options.trainingStocks;
-    var stockSymbols = this.stockSymbols = options.stockSymbols;
+    var _self = this;
+    _self.weights = options.weights;
+    _self.trainingStocks = options.trainingStocks;
+    _self.stockSymbols = options.stockSymbols;
 
-    console.log(weights);
-    var weightsSize = this.weightsSize = weights.length;
-    console.log(weightsSize);
+    console.log(_self.weights);
+    _self.weightsSize = _self.weights.length;
+    console.log(_self.weightsSize);
 
-    var stocksSize = this.stocksSize = stockSymbols.length;
-    console.log(stocksSize);
-
-    var predictionArrays =  this.predictionArrays;
-
+    _self.stocksSize = _self.stockSymbols.length;
+    console.log(_self.stocksSize);
 }
 
 SpatialPrediction.prototype.getPredictions = function(prediction, stock_symbol) {
-    var predictionArrays = this.predictionArrays = [];
-    var predictionOpacities = [];
-    var stockIndex = this.trainingStocks.indexOf(stock_symbol);
-    for (var i = 0; i < this.weightsSize; i++) {
-        var distance = Math.abs(this.weights[i][stockIndex]- prediction);
+    var _self = this;
+    _self.predictionArrays = [];
+    _self.predictionOpacities = [];
+    var stockIndex = _self.trainingStocks.indexOf(stock_symbol);
+    for (var i = 0; i < _self.weightsSize; i++) {
+        var distance = Math.abs(_self.weights[i][stockIndex]- prediction);
         if ( distance < 1 ) {
             var opacity = 1 - distance;
-            predictionArrays.push(this.weights[i]);
-            predictionOpacities.push(opacity);
+            _self.predictionArrays.push(_self.weights[i]);
+            _self.predictionOpacities.push(opacity);
         }
     }
 
     var returnVal = [];
-    returnVal.arrays = predictionArrays;     
-    returnVal.opacities = predictionOpacities; 
+    returnVal.arrays = _self.predictionArrays;     
+    returnVal.opacities = _self.predictionOpacities; 
     return returnVal;
 };

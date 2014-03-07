@@ -1,60 +1,59 @@
 //Stock Class
 
 function Stock(options) {
-    var data = this.data = options.data;
-    var companyName = this.companyName = options.companyName;
-    var symbol = this.symbol = options.symbol;
-    var startDate = this.startDate = options.startDate; 
-    var min = this.min = 0;
-    var max = this.max = 0;
-    var normalization = this.normalization = 0;
-    var dataFiltered = this.dataFiltered = [];
+    var _self = this;
+    _self.data = options.data;
+    _self.companyName = options.companyName;
+    _self.symbol = options.symbol;
+    _self.startDate = options.startDate; 
+    _self.min = 0;
+    _self.max = 0;
+    _self.normalization = 0;
+    _self.stockColumns = options.stockColumns;
+   
 } 
 
 Stock.prototype.normalize = function(close_values) {
-    var data = this.data;
+    var _self = this; 
     var max = Math.max.apply(Math, close_values) + 0.0001;
     var min = Math.min.apply(Math, close_values) - 0.0001;
 
     for (var i= 0; i < close_values.length; i++) {
-        data[i].normalized = (data[i].normalized - min)/(max - min);
+        _self.data[i].normalized = (_self.data[i].normalized - min)/(max - min);
     }
     
-    min = this.min = 100000;
-    max = this.max = 0;
-    for (var i = 0; i < data.length; i++) {
-        if( this.min > data[i]['Adj Close'] && data[i].Date >  this.startDate ) {
-            this.min = data[i]['Adj Close'];
+    _self.min = 100000;
+    _self.max = 0;
+    for (var i = 0; i < _self.data.length; i++) {
+        if( _self.min > _self.data[i][_self.stockColumns[6]] && _self.data[i][_self.stockColumns[0]] >  _self.startDate ) {
+            _self.min = _self.data[i][_self.stockColumns[6]];
         }
-        if( this.max < data[i]['Adj Close'] && data[i].Date >  this.startDate ) {
-            this.max = data[i]['Adj Close'];
+        if( _self.max < _self.data[i][_self.stockColumns[6]] && _self.data[i][_self.stockColumns[0]] >  _self.startDate ) {
+            _self.max = _self.data[i][_self.stockColumns[6]];
         }   
     }
     
-    this.min = this.min - 0.0002;
-    this.normalization = this.max - this.min + 0.0003;
-    console.log(this.companyName +" min -"+this.min+" norm -"+this.normalization);
+    _self.min = _self.min - 0.0002;
+    _self.normalization = _self.max - _self.min + 0.0003;
+    console.log(_self.companyName +" min -" + _self.min+" norm -" + _self.normalization);
     
 };
 
 Stock.prototype.deNormalize = function(value) {
-    var normalization = this.normalization; 
-    var min = this.min; 
-    
-    return min+value*normalization; 
+    var _self = this;
+    return _self.min+value*_self.normalization; 
 };
 
 Stock.prototype.normalizeValue = function(value) {
-    var normalization = this.normalization; 
-    var min = this.min; 
-    
-    return (value - min)/normalization; 
+    var _self = this;
+    return (value - _self.min)/_self.normalization; 
 };
 
 Stock.prototype.getFilteredData = function(brush) {
-    var dataFiltered = this.dataFiltered = this.data.filter(function(d, i) {
-        if ( (d[stockColumns[0]] >= brush[0]) && (d[stockColumns[0]] <= brush[1]) ) {
-            return d[stockColumns[1]];
+    var _self = this;
+    var dataFiltered = _self.data.filter(function(d, i) {
+        if ( (d[_self.stockColumns[0]] >= brush[0]) && (d[_self.stockColumns[0]] <= brush[1]) ) {
+            return d[_self.stockColumns[1]];
         }
     });
     

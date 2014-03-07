@@ -11,7 +11,7 @@ function CorrelationChart(options) {
     _self.links = [];
     
     _self.margin = {top: 60, right: 20, bottom: 60, left: 20};
-    _self.width = ($("#correlation-viewer").parent().width()/3 - _self.margin.left - _self.margin.right);
+    _self.width = ($("#correlation-viewer").parent().width()/3 - _self.margin.left - _self.margin.right - 5);
     _self.height = ($("#correlation-viewer").parent().height() - _self.margin.top - _self.margin.bottom);
         
     _self.force = d3.layout.force()
