@@ -44,8 +44,8 @@ function LineChart(options) {
         //alert("expand");
         console.log("width"+ 49 * $("#linechart-viz").width()/100 +","+ $("#ID"+_self.id).width());
         if ($("#ID"+_self.id).width() === 480) {
-            $("#ID"+_self.id).width(Math.round(57 * $("#linechart-viz").width()/100));
-        } else if ($("#ID"+_self.id).width() === Math.round(57*$("#linechart-viz").width()/100)) {
+            $("#ID"+_self.id).width(Math.round(54 * $("#linechart-viz").width()/100));
+        } else if ($("#ID"+_self.id).width() === Math.round(54*$("#linechart-viz").width()/100)) {
             $("#ID"+_self.id).width(480);
         }
     }

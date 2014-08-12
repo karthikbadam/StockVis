@@ -16,7 +16,7 @@ function CorrelationChart(options) {
         
     _self.force = d3.layout.force()
     .charge(-120)
-    .linkDistance(function(d) { return 10*Math.sqrt(d.value);} )
+    .linkDistance(function(d) { return 14*Math.sqrt(d.value);} )
     .size([_self.width, _self.height]);
 
     _self.div = d3.select("#correlation-viewer");    
