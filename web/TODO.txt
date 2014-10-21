@@ -1,0 +1,4 @@
+[ ] Adding a database on the client to read the structured stock data and run faster
+[ ] Do something about the colors
+[ ] Add volume amount label to the bar charts
+[ ] 

@@ -24,6 +24,7 @@ function TemporalPrediction(options) {
     console.log("result --"+result);
 };
 
+/* calculates temporal prediction */
 TemporalPrediction.prototype.predict = function(input) {
     var _self = this;
     

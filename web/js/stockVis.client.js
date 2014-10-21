@@ -75,16 +75,16 @@ $(document).ready(function() {
       
     });
 
-    //read the list of stocks first
+    //reads the list of stocks first
     d3.csv(stockList, function(error, data) {
         //for each string element in the data
         data.forEach(function(d) {
             
-            //collect all stock values into a data structure
+            //collects all stock values into a data structure
             stockSymbols.push(d.symbols);
             companyNames.push(d.company);
 
-            //add each stock to a list in UI and associate it with a handler
+            //adds each stock to a list in UI and associate it with a handler
             $('#stocklist').append('<option class = "ui-widget-content" id='+d.symbols+'>'+ d.company+'</option>');
 
         });
@@ -93,7 +93,10 @@ $(document).ready(function() {
            source: companyNames
          });
          
-         $("#search").keyup(function (e) {
+         
+        /* Searches box above the list of stocks */ 
+        $("#search").keyup(function (e) {
+            //checking for a click of the "Enter" key
             if (e.keyCode == 13) {
                 var selectedCompany = $("#search").val();
                 var index = companyNames.indexOf(selectedCompany);
@@ -101,7 +104,7 @@ $(document).ready(function() {
             }
         });
         
-        //get all selections in a newlySelectedSymbols list
+        /* Gets all selections in a newlySelectedSymbols list */
         $("select").change(function () {
             newlySelectedSymbols.length = 0;
             $( "select option:selected" ).each(function() {
@@ -111,16 +114,19 @@ $(document).ready(function() {
         });
         
         
-        //add newly selected stocks to the workspace
+        /* Adds newly selected stocks to the workspace */
         $("#add_button").on('click', function (e) {
             
-            //go through the newlySelectedSymbols list and download each stock data file
+            //goes through the newlySelectedSymbols list and download each stock data file
             newlySelectedSymbols.forEach(function(stock_id) {
                 
+                //stock not already selected
                 if (selectedSymbols.indexOf(stock_id) <= -1) {
                     
                     var stock_name = companyNames[stockSymbols.indexOf(stock_id)];
                     
+                    /* Loads the data for this particular stock */
+                    // TODO: How about using a browser database?
                     d3.csv('data/'+stock_id+'.csv', function(error, data) {
                         //Data downloaded 
                         if (error) {
@@ -153,7 +159,7 @@ $(document).ready(function() {
 
                         });
                         
-                        //create a stock object for future reference
+                        //creates a stock object for future reference
                         var stockObject = new Stock({
                             data: data,
                             companyName: stock_name,
@@ -178,6 +184,7 @@ $(document).ready(function() {
                             temporalPredictors: temporalPredictors
                         }));
 
+                        /* Checks if there is an overview chart created -- if not -- do it */    
                         if ($("#overviewchart-viz").contents().length < 1) {
                             overviewChart = new OverviewChart({
                                 stockObject: stockObject,

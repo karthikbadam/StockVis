@@ -19,6 +19,8 @@ SpatialPrediction.prototype.getPredictions = function(prediction, stock_symbol) 
     _self.predictionArrays = [];
     _self.predictionOpacities = [];
     var stockIndex = _self.trainingStocks.indexOf(stock_symbol);
+    
+    /* Get the weights from the SOM to get the closest values from the history */
     for (var i = 0; i < _self.weightsSize; i++) {
         var distance = Math.abs(_self.weights[i][stockIndex]- prediction);
         if ( distance < 1 ) {

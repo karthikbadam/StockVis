@@ -1,4 +1,4 @@
-//LineChart class
+//Stock value + volume visualization: Creates a line chart of the value and a bar chart of the volume
 
 function LineChart(options) {
 
@@ -40,6 +40,7 @@ function LineChart(options) {
     _self.div.append("div").attr("class", "expandClass")
             .on("click", expandChart);
     
+    /* Manage visual space to handle prediction chaining */
     function expandChart() {
         //alert("expand");
         console.log("width"+ 49 * $("#linechart-viz").width()/100 +","+ $("#ID"+_self.id).width());
@@ -49,7 +50,7 @@ function LineChart(options) {
             $("#ID"+_self.id).width(480);
         }
     }
-
+    
     _self.svg = _self.div.append("svg")
         .attr("width", _self.svgWidth + _self.margin.left - _self.margin.right)
         .attr("height", _self.height + _self.margin.top + _self.margin.bottom)
@@ -76,7 +77,6 @@ function LineChart(options) {
         .attr("transform", "translate(" + (_self.margin.left) + "," + _self.margin.top / 4 + ")");
 
 
-    
     //sets domain for Axis x - date and Axis y - Adj close
     _self.x = d3.time.scale()
         .range([0, _self.width]);
@@ -221,6 +221,7 @@ function LineChart(options) {
     var rectangle_height = _self.height + _self.margin.top + _self.margin.bottom;
     
     var numberOfPredictions = 15;
+    //draws the visual prediction space
     for (var i = 0; i < numberOfPredictions; i++) {
         var rect = _self.svg.append("svg:rect")
             .attr("class", "rect")
@@ -252,11 +253,12 @@ function LineChart(options) {
         .attr("marker-end", "url(#marker)");
     
 
-    //prediction draw handlers 
+    //draw handlers for when initiates prediction 
     var predictMouseClicked = false;
     _self.userPredicted = false;
     _self.lineLength = 0;
 
+    
     function mousedown() {
         predictMouseClicked = true;
         _self.lineLength = 0;
@@ -264,6 +266,8 @@ function LineChart(options) {
 
     function mousemove() {
         var m = d3.mouse(this);
+        
+        /* Indirection to check if the user indeed wants a prediction */
         if (predictMouseClicked) {
             draw.attr("x2", (_self.width - 2*rect_offsetX + (_self.numberOfPredictionsMade +1)*rectangle_width))
                 .attr("y2", (m[1] - _self.margin.top))
@@ -298,14 +302,18 @@ function LineChart(options) {
         
         var count=0;
         for (var i = 0; i < _self.charts.length; i++) {
+            
             if (_self.charts[i].userPredicted === true) {
+            
                 count++;
                 continue;
+            
             } else {
                 break;
             }
         }
 
+        // when prediction on all the charts happens
         if (count === _self.charts.length) {
            for (var i = 0; i < _self.charts.length; i++) {
                _self.charts[i].moveToNextInstance();
@@ -313,12 +321,13 @@ function LineChart(options) {
            return;
         }
         
+        // when moving to the next prediction stage during chaing, record the current value
         if (_self.startedPredictions) {
             var actualValue = _self.tomorrowValue;
             return;
         }
         
-        //pop up a confirm dialog box for spatial prediction
+        // pop up a confirm dialog box for spatial prediction
         $("#dialog-confirm").dialog({
             resizable: false,
             height: 140,
@@ -370,7 +379,8 @@ LineChart.prototype.moveToNextInstance = function() {
     if (b.getDay() === 5) {
         tomorrow.setDate(b.getDate() + 3);
     }
-    //go through the data to find the actual value
+    
+    // goes through the data to find the actual tomorrow's value -- we do have training data
     _self.tomorrowValue = 0;
     for (var i = 0; i < _self.data.length; i++) {
         var d = _self.data[i];
@@ -381,7 +391,7 @@ LineChart.prototype.moveToNextInstance = function() {
         }
     }
     
-    
+    // reads the last 15 values -- this might have to contain the predictions    
     var prData = [];
     prData.push(stockData);
     for (var i = 0; i < 15; i++) {
@@ -396,6 +406,7 @@ LineChart.prototype.moveToNextInstance = function() {
     
     _self.numberOfPredictionsMade++;
     
+    //adding a line to the prediction space
     _self.svg.append("line")
         .attr("class", "userPredictionLine")
         .attr("x1", _self.lastValueX)
@@ -428,8 +439,6 @@ LineChart.prototype.moveToNextInstance = function() {
         .attr("stroke", _self.color(_self.id))
         .attr("stroke-opacity", 0.2)
         .attr("stroke-width", "2px");
-    
-    
     
     console.log("after all prediction --"+_self.lastValueX);
     _self.svg.select("#prediction")

@@ -85,6 +85,7 @@ function OverviewChart(options) {
         .attr("height", _self.height)
         .attr("z-index", 3);
 
+    /* brush and link to guide interaction from the overview chart */
     function onBrush() {
         /* this will return a date range to pass into the chart object */
         _self.b = brush.empty() ? _self.x.domain() : brush.extent();

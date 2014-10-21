@@ -1,4 +1,4 @@
-//Stock Class
+//Stock datastructure to store value, volume, and manage operations on the stock
 
 function Stock(options) {
     var _self = this;
