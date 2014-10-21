@@ -30,6 +30,7 @@ function LineChart(options) {
     _self.svgWidth = 2*$("#linechart-viz").width()/3 - _self.margin.left - _self.margin.right;
     
     _self.predictionRects = [];
+    
     _self.width = (480 - _self.margin.left - _self.margin.right),
         _self.height = (250 - _self.margin.top - _self.margin.bottom);
 
