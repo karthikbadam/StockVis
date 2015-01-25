@@ -16,7 +16,7 @@ function CorrelationChart(options) {
         
     _self.force = d3.layout.force()
     .charge(-120)
-    .linkDistance(function(d) { return 14*Math.sqrt(d.value);} )
+    .linkDistance(function(d) { return _self.width/4 - _self.width*d.value/4;} )
     .size([_self.width, _self.height]);
 
     _self.div = d3.select("#correlation-viewer");    
@@ -51,9 +51,14 @@ CorrelationChart.prototype.refresh = function () {
             link1.target = j;
             var data1 = _self.selectedSymbolsData[i];
             var data2 = _self.selectedSymbolsData[j];
-            var value1 = 100*(data1[0][stockColumns[6]] - data1[1][stockColumns[6]])/data1[1][stockColumns[6]];
-            var value2 = 100*(data2[0][stockColumns[6]] - data2[1][stockColumns[6]])/data2[1][stockColumns[6]];
-            link1.value = Math.pow(value1 - value2, 2);
+            
+            link1.value = _self.getCorrelationValue(data1, data2);
+            console.log(link1.value);
+            //var value1 = 100*(data1[0][stockColumns[6]] - data1[1][stockColumns[6]])/data1[1][stockColumns[6]];
+            //var value2 = 100*(data2[0][stockColumns[6]] - data2[1][stockColumns[6]])/data2[1][stockColumns[6]];
+            //link1.value = Math.pow(value1 - value2, 2);
+            
+            
             _self.links.push(link1);
         }
     }
@@ -92,4 +97,53 @@ CorrelationChart.prototype.refresh = function () {
     
 };
 
+CorrelationChart.prototype.getCorrelationValue = function (x, y) {
+    var shortestArrayLength = 0;
 
+    if (x.length == y.length) {
+        shortestArrayLength = x.length;
+
+    } else if (x.length > y.length) {
+        shortestArrayLength = y.length;
+
+    } else {
+        shortestArrayLength = x.length;
+
+    }
+
+    var xy = [];
+    var x2 = [];
+    var y2 = [];
+
+    for (var i = 0; i < shortestArrayLength; i++) {
+        xy.push(x[i][stockColumns[6]] * y[i][stockColumns[6]]);
+        x2.push(x[i][stockColumns[6]] * x[i][stockColumns[6]]);
+        y2.push(y[i][stockColumns[6]] * y[i][stockColumns[6]]);
+
+    }
+
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_x2 = 0;
+    var sum_y2 = 0;
+
+    for (var i = 0; i < shortestArrayLength; i++) {
+        sum_x += x[i][stockColumns[6]];
+        sum_y += y[i][stockColumns[6]];
+        sum_xy += xy[i];
+        sum_x2 += x2[i];
+        sum_y2 += y2[i];
+
+    }
+
+    var step1 = (shortestArrayLength * sum_xy) - (sum_x * sum_y);
+    var step2 = (shortestArrayLength * sum_x2) - (sum_x * sum_x);
+    var step3 = (shortestArrayLength * sum_y2) - (sum_y * sum_y);
+    var step4 = Math.sqrt(step2 * step3);
+
+    var correlation = step1 / step4;
+
+    if (isNaN(correlation)) return 0;
+    return correlation;
+}
