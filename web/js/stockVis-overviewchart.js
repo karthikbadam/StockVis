@@ -13,6 +13,8 @@ function OverviewChart(options) {
         left: 30
     };
     
+    _self.correlationViewer = options.correlationViewer;
+    
     _self.color = options.color;
     _self.linecharts = options.linecharts;
     
@@ -97,6 +99,8 @@ function OverviewChart(options) {
                 //console.log("error caught -" + err);
             }
         }
+             
+        _self.correlationViewer.refresh();
     }
 
     //user study part!
