@@ -252,8 +252,8 @@ g.tick text {
     padding: 0px;
     float: left; 
     border: 1px solid rgba(180, 180, 180, 0.2);
-    display: compact;
-    overflow: hidden;
+    /*display: compact;*/
+    /*overflow-x: hidden;*/ 
 }
 
 .volumeBar {
@@ -372,4 +372,16 @@ div.ui_button:hover {
     border: 1px solid #ddd;
 }
 
+.ui-dialog-content{
+    background-color: #ccc;
+}
+
+.ui-widget-content {
+    background-color: #ffffff;
+    border: 1px solid #222;
+}
+
+.ui-dialog-titlebar {
+    background-color: #888;
+}
 
