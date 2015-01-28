@@ -154,7 +154,8 @@ OverviewChart.prototype.addLine = function(options) {
         .attr("clip-path", "url(#clip)")
         .data([_self.data])
         .attr("d", _self.line)
-        .attr("stroke", _self.color(options.id))
+        //.attr("stroke", _self.color(options.id))
+        .attr("stroke", "#444")
         .attr("fill", "transparent")
         .attr("stroke-width", "1.5px")
         .attr("opacity", 0.8).attr("z-index", 1);

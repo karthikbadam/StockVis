@@ -44,9 +44,9 @@ function LineChart(options) {
     function expandChart() {
         //alert("expand");
         console.log("width"+ 49 * $("#linechart-viz").width()/100 +","+ $("#ID"+_self.id).width());
-        if ($("#ID"+_self.id).width() === 480) {
+        if ($("#ID"+_self.id).width() == 480) {
             $("#ID"+_self.id).width(Math.round(54 * $("#linechart-viz").width()/100));
-        } else if ($("#ID"+_self.id).width() === Math.round(54*$("#linechart-viz").width()/100)) {
+        } else if ($("#ID"+_self.id).width() == Math.round(54*$("#linechart-viz").width()/100)) {
             $("#ID"+_self.id).width(480);
         }
     }
@@ -148,7 +148,8 @@ function LineChart(options) {
         .attr("clip-path", "url(#clip-" + _self.id + ")")
         .data([_self.dataFiltered])
         .attr("d", _self.line)
-        .attr("stroke", _self.color(_self.id))
+        //.attr("stroke", _self.color(_self.id)) //change COLOR THEME
+        .attr("stroke", "#67655D")    
         .attr("fill", "transparent")
         .attr("stroke-width", "1.5px")
         .attr("z-index", 1);
@@ -171,12 +172,13 @@ function LineChart(options) {
 
     //draws the text -- name of the stock    
     _self.chartContainer.append("text").attr("class", "Stock-title")
-        .attr("transform", "translate(" + 10 + ",0)")
+        .attr("transform", "translate(10,-20)")
         .text(_self.stockName)
-        .attr("stroke-opacity", 0.3)
-        .attr("fill-opacity", 0.3)
-        .attr("stroke", color(_self.id))
-        .attr("font-size", "11px");
+        .attr("stroke-opacity", 0)
+        .attr("fill-opacity", 0.7)
+        //.attr("stroke", color(_self.id)) //--change COLOR THEME
+        .attr("stroke", "#000")
+        .attr("font-size", "12px");
 
     
     //parameters to show the prediction line at end of each chart
@@ -211,7 +213,8 @@ function LineChart(options) {
         .attr("height", function(d) {
             return _self.height / 4 - _self.volumeY(d[stockColumns[5]]);
         })
-        .attr("fill", _self.color(_self.id))
+        //.attr("fill", _self.color(_self.id)) //--change COLOR THEME
+        .attr("fill", "#222")
         .attr("fill-opacity", 0.3);
 
 
@@ -271,7 +274,8 @@ function LineChart(options) {
         if (predictMouseClicked) {
             draw.attr("x2", (_self.width - 2*rect_offsetX + (_self.numberOfPredictionsMade +1)*rectangle_width))
                 .attr("y2", (m[1] - _self.margin.top))
-                .attr("stroke", _self.color(_self.id));
+                //.attr("stroke", _self.color(_self.id)); //--change COLOR SCHEME
+                .attr("stroke", "#222");
             
             _self.predictedValueX = _self.width - rect_offsetX + (_self.numberOfPredictionsMade + 1)*rectangle_width;    
             _self.predictedValueY = m[1] - _self.margin.top;    
@@ -413,7 +417,8 @@ LineChart.prototype.moveToNextInstance = function() {
         .attr("y1", _self.lastValueY)
         .attr("x2", _self.predictedValueX)
         .attr("y2", _self.predictedValueY)
-        .attr("stroke", _self.color(_self.id))
+        //.attr("stroke", _self.color(_self.id)) //change COLOR THEME
+        .attr("stroke", "#222")    
         .attr("stroke-opacity", 0.8)
         .attr("stroke-width", "2px");
      
@@ -436,8 +441,9 @@ LineChart.prototype.moveToNextInstance = function() {
         .attr("y1", _self.lastValueY)
         .attr("x2", _self.lastValueX + _self.margin.right)
         .attr("y2", _self.y(_self.currentPrediction))
-        .attr("stroke", _self.color(_self.id))
-        .attr("stroke-opacity", 0.2)
+        //.attr("stroke", _self.color(_self.id)) //change COLOR THEME
+        .attr("stroke", "#222")    
+        .attr("stroke-opacity", 0.8)
         .attr("stroke-width", "2px");
     
     console.log("after all prediction --"+_self.lastValueX);
@@ -519,8 +525,9 @@ LineChart.prototype.showOnly = function(b, empty) {
         .attr("height", function(d) {
             return _self.height / 4 - volumeY(d[stockColumns[5]]);
         })
-        .attr("fill", color(_self.id))
-        .attr("fill-opacity", 0.6);
+        //.attr("fill", color(_self.id))
+        .attr("fill", "#222") //--change COLOR THEME
+        .attr("fill-opacity", 0.3);
 
     _self.chartContainer.select("path")
         .attr("clip-path", "url(#clip-" + _self.id + ")")
@@ -538,7 +545,8 @@ LineChart.prototype.showOnly = function(b, empty) {
         .attr("cx", _self.line.x())
         .attr("cy", _self.line.y())
         .attr("r", 3)
-        .attr("stroke", _self.color(_self.id))
+        //.attr("stroke", _self.color(_self.id)) //-- change COLOR SCHEME
+        .attr("stroke", "#222")
         .attr("fill", "transparent")
         .attr("stroke-opacity", 0.3);
 
@@ -584,9 +592,10 @@ LineChart.prototype.showOnly = function(b, empty) {
         .attr("y1", _self.lastValueY)
         .attr("x2", _self.lastValueX + _self.margin.right)
         .attr("y2", _self.y(_self.currentPrediction))
-        .attr("stroke", _self.color(_self.id))
+        //.attr("stroke", _self.color(_self.id))
+        .attr("stroke", "#222")
         .attr("stroke-opacity", 0.4)
-        .attr("stroke-width", "2px");
+        .attr("stroke-width", "1px");
 
 };
 
@@ -603,7 +612,8 @@ LineChart.prototype.addPrediction = function(predictionArray, opacity) {
         .attr("y1", _self.lastValueY)
         .attr("x2", _self.lastValueX + _self.margin.right)
         .attr("y2", _self.y(value))
-        .attr("stroke", _self.color(_self.id))
+        //.attr("stroke", _self.color(_self.id))
+        .attr("stroke", "#888")
         .attr("stroke-opacity", opacity);
 };
 
