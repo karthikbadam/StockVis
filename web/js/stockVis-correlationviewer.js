@@ -30,6 +30,12 @@ function CorrelationChart(options) {
         .append("g")
         .attr("transform", "translate(" + _self.margin.left + "," + _self.margin.top + ")");
 
+    _self.nodes = [];    
+    _self.links = [];
+    
+    _self.force.nodes(_self.nodes)
+      .links(_self.links);
+
 }
 
 CorrelationChart.prototype.add = function (options) {
@@ -58,6 +64,7 @@ CorrelationChart.prototype.refresh = function () {
         _self.nodes.push(node1);
     }
     
+    
     for (var i = 0; i < _self.selectedSymbols.length; i++) {
         for (var j = i+1; j < _self.selectedSymbols.length; j++ ) {
             var link1 = {};
@@ -79,8 +86,12 @@ CorrelationChart.prototype.refresh = function () {
         }
     }
     
-    
+    _self.force.nodes(_self.nodes)
+      .links(_self.links);
 
+    if (_self.link)
+        _self.link.remove();
+    
     _self.link = _self.svg.selectAll(".link")
         .data(_self.links)
         .enter().append("line")
@@ -88,8 +99,12 @@ CorrelationChart.prototype.refresh = function () {
         .attr("stroke", "#aaa")
         .attr("stroke-width", "0.5px");
 
+    
     //_self.link.exit().remove();
-
+    
+    if (_self.node)
+        _self.node.remove();
+    
     _self.node = _self.svg.selectAll(".node")
         .data(_self.nodes)
         .enter().append("circle")
@@ -101,6 +116,7 @@ CorrelationChart.prototype.refresh = function () {
     _self.node.append("title")
         .text(function(d) { return d.name; });
 
+    
     //_self.node.exit().remove();
 
     _self.force.on("tick", function() {
@@ -115,11 +131,15 @@ CorrelationChart.prototype.refresh = function () {
                 //.attr("cy", function(d) { return d.y; });
     });
     
-    _self.force.nodes(_self.nodes)
-      .links(_self.links)
-      .charge(-120)
-      .linkDistance(function(d) { return _self.width/3 - _self.width*d.value/3;} )
+    _self.force
       .start();
+    
+    var n = _self.nodes.length; 
+    for (var i = n * n; i > 0; --i) 
+        _self.force.tick();
+    
+    _self.force.stop();
+
 };
 
 CorrelationChart.prototype.getCorrelationValue = function (x, y) {
