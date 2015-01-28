@@ -21,7 +21,15 @@ function CorrelationChart(options) {
     .linkDistance(function(d) { return _self.width/3 - _self.width*d.value/3;} )
     .size([_self.width, _self.height]);
 
-    _self.div = d3.select("#correlation-viewer");    
+    _self.div = d3.select("#correlation-viewer"); 
+    
+    _self.svg = _self.div.append("svg")
+        .attr("class", "correlation-svg")
+        .attr("width", _self.width + _self.margin.left + _self.margin.right )
+        .attr("height", _self.height + _self.margin.top + _self.margin.bottom )
+        .append("g")
+        .attr("transform", "translate(" + _self.margin.left + "," + _self.margin.top + ")");
+
 }
 
 CorrelationChart.prototype.add = function (options) {
@@ -37,17 +45,9 @@ CorrelationChart.prototype.refresh = function () {
     var _self = this; 
     var radius = _self.radius = 7; 
     
-    $("#correlation-viewer").empty();
+    //$("#correlation-viewer").empty();
     
-    _self.div = d3.select("#correlation-viewer");
-       
-    _self.svg = _self.div.append("svg")
-        .attr("class", "correlation-svg")
-        .attr("width", _self.width + _self.margin.left + _self.margin.right )
-        .attr("height", _self.height + _self.margin.top + _self.margin.bottom )
-        .append("g")
-        .attr("transform", "translate(" + _self.margin.left + "," + _self.margin.top + ")");
-
+    
     _self.nodes = [];    
     _self.links = [];
 
@@ -79,9 +79,7 @@ CorrelationChart.prototype.refresh = function () {
         }
     }
     
-    _self.force.nodes(_self.nodes)
-      .links(_self.links)
-      .start();
+    
 
     _self.link = _self.svg.selectAll(".link")
         .data(_self.links)
@@ -89,6 +87,8 @@ CorrelationChart.prototype.refresh = function () {
         .attr("class", "link")
         .attr("stroke", "#aaa")
         .attr("stroke-width", "0.5px");
+
+    //_self.link.exit().remove();
 
     _self.node = _self.svg.selectAll(".node")
         .data(_self.nodes)
@@ -100,6 +100,8 @@ CorrelationChart.prototype.refresh = function () {
 
     _self.node.append("title")
         .text(function(d) { return d.name; });
+
+    //_self.node.exit().remove();
 
     _self.force.on("tick", function() {
       _self.link.attr("x1", function(d) { return d.source.x; })
@@ -113,6 +115,11 @@ CorrelationChart.prototype.refresh = function () {
                 //.attr("cy", function(d) { return d.y; });
     });
     
+    _self.force.nodes(_self.nodes)
+      .links(_self.links)
+      .charge(-120)
+      .linkDistance(function(d) { return _self.width/3 - _self.width*d.value/3;} )
+      .start();
 };
 
 CorrelationChart.prototype.getCorrelationValue = function (x, y) {
