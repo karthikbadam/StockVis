@@ -236,9 +236,7 @@ function createCorrelation () {
             stocks: stocks,
             selectedSymbols: selectedSymbols,
             color: color,
-    }); 
-    
-    
+    });     
     correlationViewer.refresh();
 }
 

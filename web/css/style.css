@@ -253,7 +253,7 @@ g.tick text {
     float: left; 
     border: 1px solid rgba(180, 180, 180, 0.2);
     /*display: compact;*/
-    /*overflow-x: hidden;*/ 
+    overflow-x: scroll;
 }
 
 .volumeBar {
