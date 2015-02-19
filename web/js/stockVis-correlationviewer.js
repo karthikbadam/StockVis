@@ -79,7 +79,7 @@ CorrelationChart.prototype.refresh = function () {
             var data2 = _self.stocks[j].dataFiltered;
 
             link1.value = _self.getCorrelationValue(data1, data2);
-            console.log(link1.value);
+            //console.log(link1.value);
             //var value1 = 100*(data1[0][stockColumns[6]] - data1[1][stockColumns[6]])/data1[1][stockColumns[6]];
             //var value2 = 100*(data2[0][stockColumns[6]] - data2[1][stockColumns[6]])/data2[1][stockColumns[6]];
             //link1.value = Math.pow(value1 - value2, 2);

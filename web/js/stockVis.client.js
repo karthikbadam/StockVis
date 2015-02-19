@@ -58,14 +58,14 @@ $(document).ready(function () {
         //Download file from servlet
         $("#start_prediction_label").html("Prediction Started");
         selectedSymbols.forEach(function (stockSymbol) {
-            $.get("/StockVisServlet/TemporalPrediction", {"symbols[]": stockSymbol}, function (data, error) {
+            //$.get("/StockVisServlet/TemporalPrediction", {"symbols[]": stockSymbol}, function (data, error) {
                 var temporalprediction = new TemporalPrediction({
-                    encog_file: data,
+                    //encog_file: data,
                     stock_name: stockSymbol
                 });
 
                 temporalPredictors[stockSymbol] = temporalprediction;
-            });
+            //});
         });
 
 //        correlationViewer = new CorrelationChart({

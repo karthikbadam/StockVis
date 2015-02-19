@@ -555,8 +555,8 @@ LineChart.prototype.showOnly = function(b, empty) {
     _self.svg.selectAll(".userPredictionLine").remove();
     _self.svg.selectAll(".predictionLine").remove();
 
-    var input = new Array(15);
-    for (var i = 0; i < 15; i++) {
+    var input = new Array(7);
+    for (var i = 0; i < 7; i++) {
         input[i] = _self.stockObject.normalizeValue(_self.dataFiltered[i][_self.stockColumns[6]]);
     }
     //find the date of next day
